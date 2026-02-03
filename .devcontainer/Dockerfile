@@ -20,6 +20,8 @@ RUN git clone --no-checkout ${PRESIDIO_REPO} /tmp/presidio \
  && cd /tmp/presidio \
  && git checkout ${PRESIDIO_REF} \
  # Install the two packages from their subdirectories
- && python -m pip install ./presidio-analyzer ./presidio-anonymizer
+ && python -m pip install ./presidio-analyzer ./presidio-anonymizer \
 # Clean up
-# && rm -rf /tmp/presidio
+&& rm -rf /tmp/presidio
+
+RUN python -m spacy download en_core_web_lg
