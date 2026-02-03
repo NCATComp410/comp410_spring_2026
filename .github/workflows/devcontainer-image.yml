@@ -41,7 +41,7 @@ jobs:
           file: .devcontainer/Dockerfile
           push: true
           tags: |
-            ghcr.io/NCATComp410/comp410-spring-2026-devcontainer:devcontainer
-            ghcr.io/NCATComp410/comp410-spring-2026-devcontainer:sha-${{ github.sha }}
+            ghcr.io/ncatcomp410/comp410-spring-2026-devcontainer:devcontainer
+            ghcr.io/ncatcomp410/comp410-spring-2026-devcontainer:sha-${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
