@@ -2,7 +2,7 @@
 // README at: https://github.com/devcontainers/templates/tree/main/src/python
 {
 	"name": "Python 3 (prebuilt)",
-	"image": "ghcr.io/ncatcomp410/comp410-spring-2026-devcontainer:devcontainer",
+	"image": "ghcr.io/ncatcomp410/comp410_spring_2026-devcontainer:devcontainer",
 
 	"hostRequirements": {
 		"cpus": 2,
