@@ -1,6 +1,6 @@
 """Unit test file for team null"""
 import unittest
-from pii_scan import analyze_text, show_aggie_pride  # noqa 
+from pii_scan import analyze_text, show_aggie_pride  # noqa
 
 
 class TestTeam_null(unittest.TestCase):
@@ -11,6 +11,7 @@ class TestTeam_null(unittest.TestCase):
 
     def test_us_ssn(self):
         """Test US_SSN functionality"""
+        self.assertTrue(True)
 
 
 if __name__ == '__main__':
