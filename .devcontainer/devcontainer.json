@@ -3,7 +3,8 @@
 {
 	"name": "Python 3 Dev Container",
 	"build": {
-		"dockerfile": "Dockerfile",
+		"dockerfile": ".devcontainer/Dockerfile",
+		"context": "..",
 		"args": {
 		"PRESIDIO_REPO": "https://github.com/microsoft/presidio.git",
 		"PRESIDIO_REF": "a8dc07658e9733092387fbd09d8cd8f137564ffb"
