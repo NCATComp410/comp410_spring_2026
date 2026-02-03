@@ -2,7 +2,7 @@
 import re
 import logging
 import spacy
-from presidio_analyzer import (AnalyzerEngine, RecognizerRegistry, RecognizerResult, 
+from presidio_analyzer import (AnalyzerEngine, RecognizerRegistry, RecognizerResult,
                                PatternRecognizer, Pattern,)
 from presidio_analyzer.predefined_recognizers import (ItDriverLicenseRecognizer,
                                                       ItVatCodeRecognizer,
@@ -138,7 +138,8 @@ def anonymize_data(data: list) -> None:
                 print(f'ID:{i}:Anonymized: {anonymize_text(item, [])}')
 
 
-def analyze_text(text: str, entity_list: list, show_supported=False) -> list[str] | list[RecognizerResult]:
+def analyze_text(text: str, entity_list: list,
+                 show_supported=False) -> list[str] | list[RecognizerResult]:
     """
     Analyze the text using the entity list
     :param text: the text to be analyzed
@@ -183,4 +184,4 @@ def read_data() -> list:
 
 if __name__ == '__main__':
     print(show_aggie_pride())
-    anonymize_data(read_data())
+    # anonymize_data(read_data())
