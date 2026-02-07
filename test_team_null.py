@@ -16,9 +16,9 @@ class TestTeam_null(unittest.TestCase):
         mid = ['12', '00']  # middle of the SSN
         suffix = ['1234', '4321']  # end of the SSN
         # loop through all combinations of prefix, mid, and suffix
-        for p in prefix:
-            for m in mid:
-                for s in suffix:
+        for p in prefix:  # this is the prefix
+            for m in mid:  # this is the middle
+                for s in suffix:  # this is the suffix
                     result = analyze_text(f'My SSN is {p}-{m}-{s}', ['US_SSN'])
                     if m == '00':
                         # negative testcase - 00 is not valid
