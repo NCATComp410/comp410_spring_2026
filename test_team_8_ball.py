@@ -40,7 +40,7 @@ class TestTeam_8_ball(unittest.TestCase):
         """Test AU_MEDICARE functionality"""
 
     def test_au_tfn(self):
-        """Test AU_MEDICARE functionality"""
+        """Test AU_TFN functionality"""
         # positive examples
         valid = ["123456782", "123 456 782", "000000000"]
         for tfn in valid:
