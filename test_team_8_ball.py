@@ -33,6 +33,31 @@ class TestTeam_8_ball(unittest.TestCase):
     def test_au_abn(self):
         """Test AU_ABN functionality"""
 
+        # Valid ABNs (known valid examples)
+        valid_abns = [
+            "51824753556",
+            "51 824 753 556"
+                    ]
+
+        for abn in valid_abns:
+            result = analyze_text(f"My ABN is {abn}", ['AU_ABN'])
+            self.assertTrue(result, f"Valid ABN not recognized: {abn}")
+            self.assertEqual(result[0].entity_type, 'AU_ABN')
+            self.assertAlmostEqual(result[0].score, 1.0, 2)
+
+        # Invalid ABNs
+        invalid_abns = [
+            "51824753557",   # checksum fail
+            "12345678901",   # random invalid
+            "5182475355",    # too short
+            "518247535566",  # too long
+            "51 824 753 000" # invalid checksum
+        ]
+
+        for abn in invalid_abns:
+            result = analyze_text(f"My ABN is {abn}", ['AU_ABN'])
+            self.assertFalse(result, f"Invalid ABN incorrectly recognized: {abn}")
+
     def test_au_acn(self):
         """Test AU_ACN functionality"""
 
