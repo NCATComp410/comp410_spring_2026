@@ -11,6 +11,24 @@ class TestTeam_8_ball(unittest.TestCase):
 
     def test_aba_routing_number(self):
         """Test ABA_ROUTING_NUMBER functionality"""
+        #ABA Routing number format 
+        prefix = ["0110", "0210"] # first 4 numbers 
+        mid = ["0001", "0000"] # middle of the numbers 
+        suffix = ["5", "1"] #end of the numbers 
+
+        #loop through all combinations
+        for p,m,s in zip(prefix,mid,suffix):
+            result = analyze_text(f"My ABA Routing Number is {p}-{m}-{s}",['ABA_ROUTING_NUMBER'])
+            if m == '0000':
+                #negative testcase - 0000 is not valid 
+                self.assertFalse(result)
+            else: 
+                #positive testcase 
+
+                self.assertTrue(result, f'ABA not recongized {p}{m}{s}')
+                #[type: ABA_ROUTING_NUMBER, start: 25, end: 34, score: 1.0]\
+                self.assertEqual(result[0].entity_type, 'ABA_ROUTING_NUMBER')
+                self.assertAlmostEqual(result[0].score, 1.0, 2)
 
     def test_au_abn(self):
         """Test AU_ABN functionality"""
