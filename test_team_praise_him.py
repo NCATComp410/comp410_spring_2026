@@ -23,7 +23,30 @@ class TestTeam_praise_him(unittest.TestCase):
 
     def test_ip_address(self):
         """Test IP_ADDRESS functionality"""
+        # IP Address Format is 000.000.000.000
+        prefix = ['192', '256'] # first octet
+        mid1 = ['56', '100'] # second octet
+        mid2 = ['76', '50'] # third octet
+        suffix = ['182', '1'] # fourth octet
 
+        # loop through all combinations of prefix, mid1, mid2, and suffix
+        for p in prefix:
+            for m1 in mid1:
+                for m2 in mid2:
+                    for s in suffix:
+                        result = analyze_text(f'My IP Address is {p}.{m1}.{m2}.{s}', ['IP_ADDRESS'])
+
+                        if p == '256':
+                            # negative test-case - 200 is not valid
+                            self.assertFalse(result)
+                        else:
+                            self.assertTrue(result, f'IP Address not recognized: {p}.{m1}.{m2}.{s}')
+                            # [type: IP_ADDRESS, start: 17, end: 30, score: 0.95]
+                            self.assertEqual(result[0].entity_type, 'IP_ADDRESS')
+                            self.assertAlmostEqual(result[0].score, 0.95, 2)
+
+
+  
 
 if __name__ == '__main__':
     unittest.main()
