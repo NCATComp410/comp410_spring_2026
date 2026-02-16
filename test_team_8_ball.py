@@ -13,7 +13,7 @@ class TestTeam_8_ball(unittest.TestCase):
         """Test ABA_ROUTING_NUMBER functionality"""
         #ABA Routing number format 
         prefix = ["0110", "0210"] # first 4 numbers 
-        mid = ["0001", "0002"] # middle of the numbers 
+        mid = ["0001", "0000"] # middle of the numbers 
         suffix = ["5", "1"] #end of the numbers 
 
         #loop through all combinations
