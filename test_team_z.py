@@ -22,7 +22,7 @@ class TestTeam__z(unittest.TestCase):
         """Test SG_NRIC_FIN functionality"""
 
     def test_sg_eun(self):
-    """Test SG_EUN functionality"""
+        """Test SG_EUN functionality"""
 
     prefix = [
         "20191234",   # valid (8 digits)
