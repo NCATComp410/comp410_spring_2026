@@ -21,8 +21,8 @@ class TestTeam__z(unittest.TestCase):
     def test_sg_nric_fin(self):
         """Test SG_NRIC_FIN functionality"""
 
-    def test_sg_eun(self):
-        """Test SG_EUN functionality"""
+    def test_sg_uen(self):
+        """Test SG_UEN functionality"""
 
         prefix = [
             "20191234",   # valid (8 digits)
@@ -40,7 +40,7 @@ class TestTeam__z(unittest.TestCase):
         for p in prefix:
             for s in suffix:
                 text = f"The company registration number is {p}{s}"
-                result = analyze_text(text, ["SG_EUN"])
+                result = analyze_text(text, ["SG_UEN"])
     
                 # negative cases
                 if len(p) != 8 or not p.isdigit() or not s.isalpha():
@@ -48,7 +48,7 @@ class TestTeam__z(unittest.TestCase):
                 else:
                     # positive cases
                     self.assertEqual(len(result), 1)
-                    self.assertEqual(result[0].entity_type, "SG_EUN")
+                    self.assertEqual(result[0].entity_type, "SG_UEN")
                     self.assertAlmostEqual(result[0].score, 0.55, 2)
 
 
