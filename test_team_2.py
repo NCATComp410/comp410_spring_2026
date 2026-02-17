@@ -36,6 +36,18 @@ class TestTeam__2(unittest.TestCase):
     def test_it_identity_card(self):
         """Test IT_IDENTITY_CARD functionality"""
 
+        valid_cards = ['AA12345AA', 'ZX9876543','1234567AA']
+        invalid_cards = ['A123456', '1234567', 'AA12B45']
+
+        for card in valid_cards:
+            result = analyze_text(f'My IT_identity_card {card}', ['IT_IDENTITY_CARD'])
+            self.assertTrue(result, f'Identity card not recognized {card}')
+            self.assertEqual(result[0].entity_type, 'IT_IDENTITY_CARD')
+            self.assertAlmostEqual(result[0].score, 0.01, 2)
+        for card in invalid_cards:
+            result = analyze_text(f'My IT_identity card {card}',['IT_IDENTITY_CARD'])
+            self.assertFalse(result)
+
     def test_it_passport(self):
         """Test IT_PASSPORT functionality"""
 
