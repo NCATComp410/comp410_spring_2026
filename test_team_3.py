@@ -35,6 +35,27 @@ class TestTeam__3(unittest.TestCase):
 
     def test_us_driver_license(self):
         """Test US_DRIVER_LICENSE functionality"""
+        # format: 8-17 numbers
+        prefix = ['123', '453456', '76456463435433589'] # first part of the number
+        mid = ['34', '765435', 'C21'] # second part of the number
+        suffix = ['678', '43632', '1'] # last part of the number
+        for p in prefix: # loops through all combinations
+            for m in mid:
+                for s in suffix:
+                    testBankNumber = analyze_text(
+                        f'My US Bank Number is {p}{m}{s}', ['US_BANK_NUMBER'])
+                    if p == '76456463435433589': # testing length too large
+                        self.assertFalse(testBankNumber)
+                    elif m == 'C21': # testing number contains alphabetical value
+                        self.assertFalse(testBankNumber)
+                    elif p == '123' and m == '34' and s == '1': # testing length too small
+                        self.assertFalse(testBankNumber)
+                    else: # Positive test case
+                        print(testBankNumber)
+                        self.assertTrue(testBankNumber, f'{p}{m}{s} is not a valid bank number')
+                        # [type: US_BANK_NUMBER, start: 21, end: 31, score: 0.4]
+                        self.assertEqual(testBankNumber[0].entity_type, 'US_BANK_NUMBER')
+                        self.assertAlmostEqual(testBankNumber[0].score, 0.4, 2)
 
     def test_us_itin(self):
         """Test US_ITIN functionality"""
