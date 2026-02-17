@@ -47,7 +47,7 @@ class TestTeam__z(unittest.TestCase):
                     self.assertFalse(result)
                 else:
                     # positive cases
-                    #self.assertEqual(len(result), 1)
+                    self.assertTrue(result, f'SG_UEN not recognized {p}{s}')
                     self.assertEqual(result[0].entity_type, "SG_UEN")
                     self.assertGreaterEqual(result[0].score, 0.5)
 
