@@ -25,9 +25,9 @@ class TestTeam__z(unittest.TestCase):
         """Test SG_UEN functionality"""
 
         prefix = [
-            "20191234",   # valid (8 digits)
-            "2019123",    # invalid (7 digits)
-            "2019ABCD"    # invalid (non-numeric)
+            "201912345",   # valid (9 digits)
+            "20191234",    # invalid (8 digits)
+            "2019ABCDE"    # invalid (non-numeric)
         ]
     
         suffix = [
@@ -43,7 +43,7 @@ class TestTeam__z(unittest.TestCase):
                 result = analyze_text(text, ["SG_UEN"])
     
                 # negative cases
-                if len(p) != 8 or not p.isdigit() or not s.isalpha():
+                if len(p) != 9 or not p.isdigit() or not s.isalpha():
                     self.assertFalse(result)
                 else:
                     # positive cases
