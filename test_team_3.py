@@ -17,7 +17,7 @@ class TestTeam__3(unittest.TestCase):
 
     def test_us_driver_license(self):
         """Test US_DRIVER_LICENSE functionality"""
-        # format: https://ntsi.com/drivers-license-format/
+        # format: too many - https://ntsi.com/drivers-license-format/
         prefix = ['H3', '989', '7832442200652534633439'] # first part of the license
         mid = ['541', '7A28', '305'] # second part of the license
         suffix = ['112', '46', '1121'] # last part of the license
