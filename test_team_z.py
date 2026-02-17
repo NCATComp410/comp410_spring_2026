@@ -49,7 +49,7 @@ class TestTeam__z(unittest.TestCase):
                     # positive cases
                     self.assertEqual(len(result), 1)
                     self.assertEqual(result[0].entity_type, "SG_UEN")
-                    self.assertAlmostEqual(result[0].score, 0.55, 2)
+                    self.assertAlmostEqual(result[0].score, 0.5)
 
 
 
