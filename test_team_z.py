@@ -24,32 +24,32 @@ class TestTeam__z(unittest.TestCase):
     def test_sg_eun(self):
         """Test SG_EUN functionality"""
 
-    prefix = [
-        "20191234",   # valid (8 digits)
-        "2019123",    # invalid (7 digits)
-        "2019ABCD"    # invalid (non-numeric)
-    ]
-
-    suffix = [
-        "A",  # valid letter
-        "Z",  # valid letter
-        "1"   # invalid (number)
-    ]
-
-    # loop through all combinations
-    for p in prefix:
-        for s in suffix:
-            text = f"The company registration number is {p}{s}"
-            result = analyze_text(text, ["SG_EUN"])
-
-            # negative cases
-            if len(p) != 8 or not p.isdigit() or not s.isalpha():
-                self.assertFalse(result)
-            else:
-                # positive cases
-                self.assertEqual(len(result), 1)
-                self.assertEqual(result[0].entity_type, "SG_EUN")
-                self.assertAlmostEqual(result[0].score, 0.55, 2)
+        prefix = [
+            "20191234",   # valid (8 digits)
+            "2019123",    # invalid (7 digits)
+            "2019ABCD"    # invalid (non-numeric)
+        ]
+    
+        suffix = [
+            "A",  # valid letter
+            "Z",  # valid letter
+            "1"   # invalid (number)
+        ]
+    
+        # loop through all combinations
+        for p in prefix:
+            for s in suffix:
+                text = f"The company registration number is {p}{s}"
+                result = analyze_text(text, ["SG_EUN"])
+    
+                # negative cases
+                if len(p) != 8 or not p.isdigit() or not s.isalpha():
+                    self.assertFalse(result)
+                else:
+                    # positive cases
+                    self.assertEqual(len(result), 1)
+                    self.assertEqual(result[0].entity_type, "SG_EUN")
+                    self.assertAlmostEqual(result[0].score, 0.55, 2)
 
 
 
