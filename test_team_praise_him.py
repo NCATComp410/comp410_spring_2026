@@ -15,7 +15,7 @@ class TestTeam_praise_him(unittest.TestCase):
     def test_es_nif(self):
         """Test ES_NIF functionality"""
 
-        def test_fi_personal_identity_code(self):
+    def test_fi_personal_identity_code(self):
         """Test FI_PERSONAL_IDENTITY_CODE functionality"""
 
         # Positive examples (valid Finnish personal identity codes)
