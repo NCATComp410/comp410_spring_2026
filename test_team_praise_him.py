@@ -35,8 +35,6 @@ class TestTeam_praise_him(unittest.TestCase):
         result = analyze_text(negative, ['FI_PERSONAL_IDENTITY_CODE'])
         self.assertFalse(result)
 
-    	self.assertFalse(result)
-
     def test_iban_code(self):
         """Test IBAN_CODE functionality"""
 
