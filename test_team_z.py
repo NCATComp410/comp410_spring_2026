@@ -3,6 +3,7 @@ import unittest
 from pii_scan import analyze_text, show_aggie_pride  # noqa 
 
 
+Hello Mykala
 class TestTeam__z(unittest.TestCase):
     """Test team _z PII functions"""
     def test_show_aggie_pride(self):
@@ -17,6 +18,8 @@ class TestTeam__z(unittest.TestCase):
 
     def test_in_gstin(self):
         """Test IN_GSTIN functionality"""
+        result = analyze_text('My IN_GSTIN is 12ABCDE345F6Z7', ['IN_GSTIN'])
+        print(result)
 
     def test_sg_nric_fin(self):
         """Test SG_NRIC_FIN functionality"""
