@@ -43,7 +43,8 @@ class TestTeam__z(unittest.TestCase):
                 #result = analyze_text(text, ["SG_UEN"])
                 #result = analyze_text(f'The company registration number is {p}{s.upper()}', ["SG_UEN"])
                 #result = analyze_text(f'The company registration number is T23LL1234B', ["SG_UEN"])
-                result  = analyze_text("201912345A",["SG_UEN"])
+                # Replaced 201912345A with a SG_UEN I know to be valid - 53125226D
+                result  = analyze_text("53125226D",["SG_UEN"])
 
                 #result = f'{p}{s}'
 
@@ -56,10 +57,15 @@ class TestTeam__z(unittest.TestCase):
                     #self.assertEqual(len(result), 1)
                 #print(result[0])
                 #self.assertTrue("201912345A", "hard coded should pass")
+                print(result)
                 self.assertTrue(result, "easy check")
                 self.assertTrue(result, f'SG_UEN not recognized {p}{s}')
-                self.assertEqual(result, "SG_UEN")
-                self.assertGreaterEqual(result, 0.5)
+                self.assertEqual(result[0].entity_type, "SG_UEN")
+                # You will want to check this out in more detail.  In this simple example the score was 1.0
+                # This is because there is a very specific check digit format.  If that format test passes
+                # the text almost certainly contains a SG_UEN
+                # https://github.com/microsoft/presidio/blob/d163f10ee63bdee12548367eb3aaf11f15c35707/presidio-analyzer/presidio_analyzer/predefined_recognizers/country_specific/singapore/sg_uen_recognizer.py#L98
+                self.assertGreaterEqual(result[0].score, 0.5)
 
 
 
