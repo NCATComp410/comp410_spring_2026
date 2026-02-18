@@ -15,6 +15,17 @@ class TestTeam__z(unittest.TestCase):
     def test_kr_rrn(self):
         """Test KR_RRN functionality"""
 
+        # Positive case
+        text_positive = "내 주민등록번호는 900101-1234567 입니다."
+        results_positive = analyze_text(text_positive, ["KR_RRN"])
+        self.assertTrue(any(r.entity_type == "KR_RRN" for r in results_positive))
+
+        # Negative case
+        text_negative = "잘못된 번호: 900101-123456"
+        results_negative = analyze_text(text_negative, ["KR_RRN"])
+        self.assertFalse(any(r.entity_type == "KR_RRN" for r in results_negative))
+
+
     def test_in_gstin(self):
         """Test IN_GSTIN functionality"""
 
