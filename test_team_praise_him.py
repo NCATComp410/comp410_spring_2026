@@ -25,15 +25,15 @@ class TestTeam_praise_him(unittest.TestCase):
         "Here is one: 010101A123A"
         ]
 
-    for text in positives:
-        result = analyze_text(text, ['FI_PERSONAL_IDENTITY_CODE'])
-        self.assertTrue(result, f"Failed to detect FI PIC in: {text}")
-        self.assertEqual(result[0].entity_type, 'FI_PERSONAL_IDENTITY_CODE')
+    	for text in positives:
+        	result = analyze_text(text, ['FI_PERSONAL_IDENTITY_CODE'])
+        	self.assertTrue(result, f"Failed to detect FI PIC in: {text}")
+        	self.assertEqual(result[0].entity_type, 'FI_PERSONAL_IDENTITY_CODE')
 
-    # Negative example (should NOT match)
-    negative = "This text does not contain a Finnish personal identity code."
-    result = analyze_text(negative, ['FI_PERSONAL_IDENTITY_CODE'])
-    self.assertFalse(result)
+    	# Negative example (should NOT match)
+    	negative = "This text does not contain a Finnish personal identity code."
+    	result = analyze_text(negative, ['FI_PERSONAL_IDENTITY_CODE'])
+    	self.assertFalse(result)
 
     def test_iban_code(self):
         """Test IBAN_CODE functionality"""
