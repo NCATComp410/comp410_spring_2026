@@ -30,8 +30,31 @@ class TestTeam__3(unittest.TestCase):
         result = analyze_text("My url http//nothing/at/all", ['URL'])
         self.assertFalse(result)
 
-    def test_us_bank_number(self):
-        """Test US_BANK_NUMBER functionality"""
+        def test_us_bank_number(self):
+            """Test US_BANK_NUMBER functionality"""
+        entity_list = ["US_BANK_NUMBER"]
+
+        # Positive
+        text1 = "Routing number: 021000021"
+        r1 = analyze_text(text1, entity_list)
+        self.assertTrue(any(r.entity_type == "US_BANK_NUMBER" for r in r1),
+                        f"Failed to detect valid routing number in: {text1}")
+
+        # Positive
+        text2 = "My bank routing number is 011000015."
+        r2 = analyze_text(text2, entity_list)
+        self.assertTrue(any(r.entity_type == "US_BANK_NUMBER" for r in r2),
+                        f"Failed to detect valid routing number in: {text2}")
+
+        # Negative 
+        text3 = "Routing number: 0210/00021"
+        r3 = analyze_text(text3, entity_list)
+        self.assertFalse(any(r.entity_type == "US_BANK_NUMBER" for r in r3),
+                 f"False positive detected in: {text3}")
+
+
+           
+        
 
     def test_us_driver_license(self):
         """Test US_DRIVER_LICENSE functionality"""
