@@ -106,12 +106,12 @@ from presidio_analyzer import PatternRecognizer, Pattern
 _identity_card_pattern = Pattern(
     name="t_identity_card_with_exp",
     regex=(
-        r"(?i)\b(?:id|identity\s*card|id\s*card|document)\s*"
-        r"(?:#|number|no\.|:)?\s*"
-        r"[A-Z0-9]{6,12}\b"
-        r"(?:.*?\b(?:exp|expires|expiration|expiry)\b\s*[:\-]?\s*"
-        r"(?:0[1-9]|1[0-2])\/(?:\d{2}|\d{4})\b)"
-    ),
+    r"(?i)\b(?:id|identity\s*card|id\s*card|document)\s*"
+    r"(?:#|number|no\.|:)?\s*"
+    r"(?P<idnum>[A-Z0-9]{6,12})\b"
+    r"(?:.*?\b(?:exp|expires|expiration|expiry)\b\s*[:\-]?\s*"
+    r"(?:(?:0[1-9]|1[0-2])\/(?:\d{2}|\d{4}))\b)"
+),
     score=0.85,
 )
 
