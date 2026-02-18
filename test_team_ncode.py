@@ -15,6 +15,25 @@ class TestTeam_ncode(unittest.TestCase):
     def test_crypto(self):
         """Test CRYPTO functionality"""
 
+        #Positive test - API key
+        valid_secret = "sk_live_1234567890SecretTokenExample"
+        result = analyze_text(
+            f"My API key is {valid_secret}",
+            entity_list=['CRYPTO']
+        )
+
+        self.assertTrue(result, f"CRYPTO not recognized {valid_secret}")
+        self.assertEqual(result[0].entity_type, 'CRYPTO')
+
+        #Negative test
+        normal_text = "This is normal text with no secrets."
+        result = analyze_text(
+            normal_text,
+            entity_list=['CRYPTO']
+        )
+
+        self.assertFalse(result, "False positive detected for CRYPTO")
+
     def test_date_time(self):
         """Test DATE_TIME functionality"""
 
