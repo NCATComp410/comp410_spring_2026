@@ -35,7 +35,7 @@ class TestTeam__1(unittest.TestCase):
                 result = analyze_text(f"My IN_Voter is {p}{s}", ['IN_VOTER'])
                 
                 # negative test case, first 3 characters need to be alphabetical
-                if p == "333" or p == "3A4":
+                if not p.isalpha():
                     self.assertFalse(result)
                 else:
                      # positive test cases
