@@ -81,6 +81,32 @@ class TestTeam__3(unittest.TestCase):
 
     def test_us_itin(self):
         """Test US_ITIN functionality"""
+        # format: 9 digits, can contain dashes
+        # begins with 9
+        # 4th and 5th digit ranges: (50-65), (70-88), (90-92, (94-99)
+        prefix = ['923', '989', '789'] # first part of the ITIN
+        mid = ['541', '728', '305'] # second part of the ITIN
+        suffix = ['112', '46', '1121'] # last part of the ITIN
+        for p in prefix: # loops through all combinations
+            for m in mid:
+                for s in suffix:
+                    testITIN = analyze_text(f'My US ITIN Number is {p}{m}{s}', ['US_ITIN'])
+                    if p == '789': # testing SSN number
+                        self.assertFalse(testITIN)
+                    elif s == '46': # testing number too short
+                        self.assertFalse(testITIN)
+                    elif s == '1121': # testing number too long
+                        self.assertFalse(testITIN)
+                    elif m == '305': # testing 4th and 5th digit outside of bounds
+                        self.assertFalse(testITIN)
+                    else: # Positive test case
+                        self.assertTrue(testITIN, f'{p}{m}{s} is not a valid passport')
+                        # [type: US_ITIN, start: 21, end: 30, score: 0.6499999999999999]
+                        self.assertEqual(testITIN[0].entity_type, 'US_ITIN')
+                        self.assertAlmostEqual(testITIN[0].start, 21, 2)
+                        self.assertAlmostEqual(testITIN[0].end, 30, 2)
+                        self.assertAlmostEqual(testITIN[0].score, 0.65, 2)
+
 
     def test_us_passport(self):
         """Test US_PASSPORT functionality"""
