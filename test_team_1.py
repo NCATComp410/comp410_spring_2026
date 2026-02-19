@@ -70,6 +70,45 @@ class TestTeam__1(unittest.TestCase):
 
         entity_list = ["IN_PASSPORT"]
 
+        # Positive case 1: Standard valid passport (no space)
+        text1 = "My passport number is A1234567."
+        results1 = analyze_text(text1, entity_list)
+        self.assertTrue(
+            any(r.entity_type == "IN_PASSPORT" for r in results1),
+            f"Failed to detect valid passport number in: {text1}"
+        )
+
+        # Positive case 2: Valid passport with optional space (matches your regex)
+        text2 = "The document shows passport A12 34569 issued in 2018."
+        results2 = analyze_text(text2, entity_list)
+        self.assertTrue(
+            any(r.entity_type == "IN_PASSPORT" for r in results2),
+            f"Failed to detect valid spaced passport number in: {text2}"
+        )
+
+        # Positive case 3: Another valid pattern with different letter prefix
+        text3 = "Passenger ID: K98 76543 was verified at the counter."
+        results3 = analyze_text(text3, entity_list)
+        self.assertTrue(
+            any(r.entity_type == "IN_PASSPORT" for r in results3),
+            f"Failed to detect valid passport number in: {text3}"
+        )
+
+        # Negative case 1: Wrong format (starts with digit)
+        text4 = "The code 91234567 should not be detected as a passport."
+        results4 = analyze_text(text4, entity_list)
+        self.assertFalse(
+            any(r.entity_type == "IN_PASSPORT" for r in results4),
+            f"False positive detected for invalid passport format in: {text4}"
+        )
+
+        # Negative case 2: Too short / malformed
+        text5 = "Temporary ID A12345 is not a passport number."
+        results5 = analyze_text(text5, entity_list)
+        self.assertFalse(
+            any(r.entity_type == "IN_PASSPORT" for r in results5),
+            f"False positive detected for short malformed passport in: {text5}"
+        )
         # Positive case 1
         text1 = "My passport number is A1234567."
         results1 = analyze_text(text1, entity_list)
