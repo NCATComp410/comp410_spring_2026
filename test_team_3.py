@@ -47,7 +47,7 @@ class TestTeam__3(unittest.TestCase):
         for p in prefix: # loops through all combinations
             for m in mid:
                 for s in suffix:
-                    testITIN = analyze_text(f'My US Bank Number is {p}{m}{s}', ['US_ITIN'])
+                    testITIN = analyze_text(f'My US ITIN Number is {p}{m}{s}', ['US_ITIN'])
                     if p == '789': # testing SSN number
                         self.assertFalse(testITIN)
                     elif s == '46': # testing number too short
