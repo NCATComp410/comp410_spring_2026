@@ -35,6 +35,63 @@ class TestTeam_8_ball(unittest.TestCase):
 
     def test_au_acn(self):
         """Test AU_ACN functionality"""
+        # ------------------------
+        # POSITIVE TEST CASES
+        # ------------------------
+
+        # Valid ACN – continuous format
+        valid_continuous = ["004085616"]
+        for acn in valid_continuous:
+            result = analyze_text(f"My ACN is {acn}", ['AU_ACN'])
+            self.assertTrue(result)
+            self.assertEqual(result[0].entity_type, 'AU_ACN')
+
+        # Valid ACN – spaced format
+        valid_spaced = ["004 085 616"]
+        for acn in valid_spaced:
+            result = analyze_text(
+                f"Australian Company Number {acn}",
+                ['AU_ACN']
+            )
+            self.assertTrue(result)
+            self.assertEqual(result[0].entity_type, 'AU_ACN')
+
+        # Valid ACN – hyphen format
+        valid_hyphen = ["004-085-616"]
+        for acn in valid_hyphen:
+            result = analyze_text(f"ACN: {acn}", ['AU_ACN'])
+            self.assertTrue(result)
+            self.assertEqual(result[0].entity_type, 'AU_ACN')
+
+        # ------------------------
+        # NEGATIVE TEST CASES
+        # ------------------------
+
+        # Wrong length (too short)
+        short_numbers = ["12345678"]
+        for num in short_numbers:
+            result = analyze_text(f"ACN {num}", ['AU_ACN'])
+            self.assertFalse(result)
+
+        # Wrong length (too long)
+        long_numbers = ["1234567890"]
+        for num in long_numbers:
+            result = analyze_text(f"ACN {num}", ['AU_ACN'])
+            self.assertFalse(result)
+
+        # Contains letters
+        invalid_letters = ["12345A789"]
+        for num in invalid_letters:
+            result = analyze_text(f"ACN {num}", ['AU_ACN'])
+            self.assertFalse(result)
+
+        # No ACN context (just 9 digits)
+        result = analyze_text("Order number 123456789", ['AU_ACN'])
+        self.assertFalse(result)
+
+        # Invalid checksum (wrong last digit)
+        result = analyze_text("ACN 004085617", ['AU_ACN'])
+        self.assertFalse(result)
 
     def test_au_medicare(self):
         """Test AU_MEDICARE functionality"""
