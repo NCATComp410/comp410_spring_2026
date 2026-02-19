@@ -12,6 +12,31 @@ class TestTeam__x(unittest.TestCase):
     def test_phone_number(self):
         """Test PHONE_NUMBER functionality"""
 
+        # Positive test cases
+        valid_numbers = [
+        "Call me at 123-456-7890",
+        "My number is (123) 456-7890",
+        "Reach me at 123 456 7890",
+        "Emergency contact: +1 123-456-7890"]
+
+        for text in valid_numbers:
+            results = analyze_text(text, ["PHONE_NUMBER"])
+            self.assertTrue(
+                any(r.entity_type == "PHONE_NUMBER" for r in results),
+                msg=f"Failed to detect PHONE_NUMBER in: {text}")
+
+        # Negative test cases
+        invalid_numbers = [
+        "My code is 123-45-678",
+        "Number: 123456789",
+        "SSN is 123-45-6789",
+        "Random number 987654"]
+            
+        for text in invalid_numbers:
+            results = analyze_text(text, ["PHONE_NUMBER"])
+            self.assertEqual(len(results),0,msg=f"Incorrectly detected PHONE_NUMBER in: {text}")
+
+
     def test_location(self):
         """Test LOCATION functionality"""
         #Positive tests
