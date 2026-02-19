@@ -20,11 +20,10 @@ class TestTeam__x(unittest.TestCase):
         "Emergency contact: +1 123-456-7890"]
 
         for text in valid_numbers:
-        results = analyze_text(text, ["PHONE_NUMBER"])
-        self.assertTrue(
-            any(r.entity_type == "PHONE_NUMBER" for r in results),
-            msg=f"Failed to detect PHONE_NUMBER in: {text}"
-        )
+            results = analyze_text(text, ["PHONE_NUMBER"])
+            self.assertTrue(
+                any(r.entity_type == "PHONE_NUMBER" for r in results),
+                msg=f"Failed to detect PHONE_NUMBER in: {text}")
 
         # Negative test cases
         invalid_numbers = [
