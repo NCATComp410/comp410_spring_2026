@@ -54,15 +54,15 @@ class TestTeam__2(unittest.TestCase):
 
         # Positive tests
         for text in positives:
-            result = analyze_text(text, ["T_IDENTITY_CARD"])
-            self.assertTrue(result, f"T_IDENTITY_CARD not recognized: {text}")
-            self.assertEqual(result[0].entity_type, "T_IDENTITY_CARD")
+            result = analyze_text(text, ["IT_IDENTITY_CARD"])
+            self.assertTrue(result, f"IT_IDENTITY_CARD not recognized: {text}")
+            self.assertEqual(result[0].entity_type, "IT_IDENTITY_CARD")
             self.assertGreaterEqual(result[0].score, 0.80)
 
         # Negative tests
         for text in negatives:
-            result = analyze_text(text, ["T_IDENTITY_CARD"])
-            self.assertEqual(len(result), 0, f"False positive T_IDENTITY_CARD: {text}")
+            result = analyze_text(text, ["IT_IDENTITY_CARD"])
+            self.assertEqual(len(result), 0, f"False positive IT_IDENTITY_CARD: {text}")
 
     def test_it_passport(self):
         """Test IT_PASSPORT functionality"""
