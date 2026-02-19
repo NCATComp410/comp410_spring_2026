@@ -60,9 +60,65 @@ class TestTeam_8_ball(unittest.TestCase):
 
     def test_au_acn(self):
         """Test AU_ACN functionality"""
+        # ------------------------
+        # POSITIVE TEST CASES
+        # ------------------------
+
+        # Valid ACN – continuous format
+        valid_continuous = ["004085616"]
+        for acn in valid_continuous:
+            result = analyze_text(f"My ACN is {acn}", ['AU_ACN'])
+            self.assertTrue(result)
+            self.assertEqual(result[0].entity_type, 'AU_ACN')
+
+        # ------------------------
+        # NEGATIVE TEST CASES
+        # ------------------------
+
+        # Wrong length (too short)
+        short_numbers = ["12345678"]
+        for num in short_numbers:
+            result = analyze_text(f"ACN {num}", ['AU_ACN'])
+            self.assertFalse(result)
+
+        # Wrong length (too long)
+        long_numbers = ["1234567890"]
+        for num in long_numbers:
+            result = analyze_text(f"ACN {num}", ['AU_ACN'])
+            self.assertFalse(result)
+
+        # Contains letters
+        invalid_letters = ["12345A789"]
+        for num in invalid_letters:
+            result = analyze_text(f"ACN {num}", ['AU_ACN'])
+            self.assertFalse(result)
+
+        # No ACN context (just 9 digits)
+        result = analyze_text("Order number 123456789", ['AU_ACN'])
+        self.assertFalse(result)
+
+        # Invalid checksum (wrong last digit)
+        result = analyze_text("ACN 004085617", ['AU_ACN'])
+        self.assertFalse(result)
 
     def test_au_medicare(self):
         """Test AU_MEDICARE functionality"""
+
+        valid_ids = ["2929 12348 1", "2234 56789 1", "4951 64979 1", "6951 82418 1", "2954 53749 1"]
+        #positive test cases for valid ids
+        for id in valid_ids:
+            result = analyze_text(f"medicare medicare medicare {id}", entity_list = ['AU_MEDICARE'])
+            #make sure we get something in the result array
+            self.assertTrue(len(result) > 0, "No AU_MEDICARE entity seen")
+            self.assertEqual(result[0].entity_type, 'AU_MEDICARE')
+            self.assertAlmostEqual(result[0].entity_type, 'AU_MEDICARE')
+
+        #negative test cases for invalid ids
+        invalid_ids = ["2234 56789 21", "12345", "2929-12349-1", "ABC D EFG HI", "2929 12338 123", "292912348923"]
+        for invalid_id in invalid_ids:
+            result = analyze_text(f"My medicare is {invalid_id}", ['AU_MEDICARE'])
+            self.assertFalse(result, f"Incorrectly detected invalid Medicare pattern: {invalid_id}")
+
 
     def test_au_tfn(self):
         """Test AU_TFN functionality"""
