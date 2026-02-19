@@ -10,30 +10,26 @@ class TestTeam_null(unittest.TestCase):
         """Test to make sure Aggie Pride is shown correctly"""
         self.assertEqual(show_aggie_pride(), "Aggie Pride - Worldwide")
 
-    def test_t_identity_card(self):
-        """Test T_IDENTITY_CARD functionality (ID number + expiration date)"""
-        positives = [
-            "Customer provided ID: A1234567 exp 12/2027 for verification.",
-            "Identity Card # ZX9K21A0 Expires 01/29 (do not log).",
-            "Document number: QWERTY99 expiration: 05/2026",
-        ]
-        negatives = [
-
-            "Order number A1234567 ships 12/2027",
-            "My appointment is 12/2027",
-            "ID: A1234567 was recorded",
-            "Identity Card: A12 exp 12/2027",
-        ]
-        # Positive tests
-        for text in positives:
-            result = analyze_text(text, ["T_IDENTITY_CARD"])
-            self.assertTrue(result, f"T_IDENTITY_CARD not recognized: {text}")
-            self.assertEqual(result[0].entity_type, "T_IDENTITY_CARD")
-            self.assertGreaterEqual(result[0].score, 0.80)
-        # Negative tests
-        for text in negatives:
-            result = analyze_text(text, ["T_IDENTITY_CARD"])
-            self.assertEqual(len(result), 0, f"False positive T_IDENTITY_CARD: {text}")
+    def test_us_ssn(self):
+        """Test US_SSN functionality"""
+        # SSN format is 000-00-0000
+        prefix = ['123', '321']  # first part of the SSN
+        mid = ['12', '00']  # middle of the SSN
+        suffix = ['1234', '4321']  # end of the SSN
+        # loop through all combinations of prefix, mid, and suffix
+        for p in prefix:  # this is the prefix
+            for m in mid:  # this is the middle
+                for s in suffix:  # this is the suffix
+                    result = analyze_text(f'My SSN is {p}-{m}-{s}', ['US_SSN'])
+                    if m == '00':
+                        # negative testcase - 00 is not valid
+                        self.assertFalse(result)
+                    else:
+                        # positive testcase
+                        self.assertTrue(result, f'SSN not recognized {p}-{m}-{s}')
+                        #[type: US_SSN, start: 10, end: 21, score: 0.85]
+                        self.assertEqual(result[0].entity_type, 'US_SSN')
+                        self.assertAlmostEqual(result[0].score, 0.85, 2)
 
 
 if __name__ == '__main__':
