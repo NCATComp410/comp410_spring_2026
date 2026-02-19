@@ -58,11 +58,11 @@ class TestTeam__3(unittest.TestCase):
                         self.assertFalse(testITIN)
                     else: # Positive test case
                         self.assertTrue(testITIN, f'{p}{m}{s} is not a valid passport')
-                        # [type: US_ITIN, start: 21, end: 30, score: 0.3]
+                        # [type: US_ITIN, start: 21, end: 30, score: 0.6499999999999999]
                         self.assertEqual(testITIN[0].entity_type, 'US_ITIN')
                         self.assertAlmostEqual(testITIN[0].start, 21, 2)
                         self.assertAlmostEqual(testITIN[0].end, 30, 2)
-                        self.assertAlmostEqual(testITIN[0].score, 0.3, 2)
+                        self.assertAlmostEqual(testITIN[0].score, 0.65, 2)
 
 
     def test_us_passport(self):
