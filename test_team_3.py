@@ -30,17 +30,109 @@ class TestTeam__3(unittest.TestCase):
         result = analyze_text("My url http//nothing/at/all", ['URL'])
         self.assertFalse(result)
 
-    def test_us_bank_number(self):
-        """Test US_BANK_NUMBER functionality"""
+        def test_us_bank_number(self):
+            """Test US_BANK_NUMBER functionality"""
+        entity_list = ["US_BANK_NUMBER"]
+
+        # Positive
+        text1 = "Routing number: 021000021"
+        r1 = analyze_text(text1, entity_list)
+        self.assertTrue(any(r.entity_type == "US_BANK_NUMBER" for r in r1),
+                        f"Failed to detect valid routing number in: {text1}")
+
+        # Positive
+        text2 = "My bank routing number is 011000015."
+        r2 = analyze_text(text2, entity_list)
+        self.assertTrue(any(r.entity_type == "US_BANK_NUMBER" for r in r2),
+                        f"Failed to detect valid routing number in: {text2}")
+
+        # Negative 
+        text3 = "Routing number: 0210/00021"
+        r3 = analyze_text(text3, entity_list)
+        self.assertFalse(any(r.entity_type == "US_BANK_NUMBER" for r in r3),
+                 f"False positive detected in: {text3}")
+
+
+           
+        
 
     def test_us_driver_license(self):
         """Test US_DRIVER_LICENSE functionality"""
+        # format: too many - https://ntsi.com/drivers-license-format/
+        prefix = ['H3', '989', '7832442200652534633439'] # first part of the license
+        mid = ['541', '7A28', '305'] # second part of the license
+        suffix = ['112', '46', '1121'] # last part of the license
+        for p in prefix: # loops through all combinations
+            for m in mid:
+                for s in suffix:
+                    testLicense = analyze_text(f'My US Driver\'s License Number is {p}{m}{s}', ['US_DRIVER_LICENSE'])
+                    if m == '7A28': # testing incorrect alphanumeric number
+                        self.assertFalse(testLicense)
+                    elif p == '7832442200652534633439': # testing incorrect numeric number
+                        self.assertFalse(testLicense)
+                    else: # Positive test case
+                        self.assertTrue(testLicense, f'{p}{m}{s} is not a valid driver\'s license')
+                        # [type: US_DRIVER_LICENSE, start: 33, end: 41, score: 0.4]
+                        self.assertEqual(testLicense[0].entity_type, 'US_DRIVER_LICENSE')
+                        if p == 'H3':
+                            self.assertAlmostEqual(testLicense[0].score, 0.65, 2)
+                        else:
+                            self.assertAlmostEqual(testLicense[0].score, 0.4, 2)
 
     def test_us_itin(self):
         """Test US_ITIN functionality"""
+        # format: 9 digits, can contain dashes
+        # begins with 9
+        # 4th and 5th digit ranges: (50-65), (70-88), (90-92, (94-99)
+        prefix = ['923', '989', '789'] # first part of the ITIN
+        mid = ['541', '728', '305'] # second part of the ITIN
+        suffix = ['112', '46', '1121'] # last part of the ITIN
+        for p in prefix: # loops through all combinations
+            for m in mid:
+                for s in suffix:
+                    testITIN = analyze_text(f'My US ITIN Number is {p}{m}{s}', ['US_ITIN'])
+                    if p == '789': # testing SSN number
+                        self.assertFalse(testITIN)
+                    elif s == '46': # testing number too short
+                        self.assertFalse(testITIN)
+                    elif s == '1121': # testing number too long
+                        self.assertFalse(testITIN)
+                    elif m == '305': # testing 4th and 5th digit outside of bounds
+                        self.assertFalse(testITIN)
+                    else: # Positive test case
+                        self.assertTrue(testITIN, f'{p}{m}{s} is not a valid passport')
+                        # [type: US_ITIN, start: 21, end: 30, score: 0.6499999999999999]
+                        self.assertEqual(testITIN[0].entity_type, 'US_ITIN')
+                        self.assertAlmostEqual(testITIN[0].start, 21, 2)
+                        self.assertAlmostEqual(testITIN[0].end, 30, 2)
+                        self.assertAlmostEqual(testITIN[0].score, 0.65, 2)
+
 
     def test_us_passport(self):
         """Test US_PASSPORT functionality"""
+        # format: letter or number + 8 numbers
+        prefix = ['A12','B98', '%90', '038'] # first part of the passport
+        mid = ['345','765', 'C21'] # second part of the passport
+        suffix = ['678','432'] # last part of the passport
+        for p in prefix: # loops through all combinations
+            for m in mid:
+                for s in suffix:
+                    testPassport = analyze_text(f'My US Passport is {p}{m}{s}', ['US_PASSPORT'])
+                    if m == 'C21': # testing non numerical value besides first value
+                        self.assertFalse(testPassport)
+                    elif p == '%90': # testing passport containing non-alphanumerical value
+                        self.assertFalse(testPassport)
+                    else: # Positive test case
+                        self.assertTrue(testPassport, f'{p}{m}{s} is not a valid passport')
+                        # [type: US_PASSPORT, start: 18, end: 27, score: 0.44999999999999996]
+                        self.assertEqual(testPassport[0].entity_type, 'US_PASSPORT')
+                        self.assertAlmostEqual(testPassport[0].start, 18, 2)
+                        self.assertAlmostEqual(testPassport[0].end, 27, 2)
+                        if p == '038': # testing older passport(full numerical)
+                            self.assertAlmostEqual(testPassport[0].score, 0.4, 2)
+                        else:
+                            self.assertAlmostEqual(testPassport[0].score, 0.45, 2)
+        
 
 
 if __name__ == '__main__':

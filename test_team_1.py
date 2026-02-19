@@ -12,6 +12,29 @@ class TestTeam__1(unittest.TestCase):
     def test_in_aadhaar(self):
         """Test IN_AADHAAR functionality"""
 
+        valids = ['234567890124', '345678901238', '456789012341']
+        invalids = ['123456789012', '12d3984D03', '234567843429012', '123456654321'] # Invalid codes if you want to try them
+
+        for a in valids:
+            result = analyze_text(f"My Uidai number is {a}", ['IN_AADHAAR'])
+
+            if a[0] == '1' or a[0] == '0':
+                # Negative case (invalid starting number)
+                self.assertFalse(result, "AADHAAR should not start with 0 or 1")
+
+            else:
+                # Positive cases
+                self.assertTrue(result, "AADHAAR number not being picked up, check the regex pattern or context words "
+                "(likely a verhoeff checksum issue if you picked the number yourself)")
+                self.assertEqual(result[0].entity_type, 'IN_AADHAAR')
+                
+                # We can set the approximation test to 1.0 since the context boosters are particular (UIDAI and AADHAAR)
+                # [type: IN_AADHAAR, start: 19, end: 31, score: 1.0]
+                self.assertAlmostEqual(result[0].score, 1.0, 2)
+
+
+
+
     def test_in_pan(self):
         """Test IN_PAN functionality"""
         entity_list = ["IN_PAN"]
@@ -47,6 +70,45 @@ class TestTeam__1(unittest.TestCase):
 
         entity_list = ["IN_PASSPORT"]
 
+        # Positive case 1: Standard valid passport (no space)
+        text1 = "My passport number is A1234567."
+        results1 = analyze_text(text1, entity_list)
+        self.assertTrue(
+            any(r.entity_type == "IN_PASSPORT" for r in results1),
+            f"Failed to detect valid passport number in: {text1}"
+        )
+
+        # Positive case 2: Valid passport with optional space (matches your regex)
+        text2 = "The document shows passport A12 34569 issued in 2018."
+        results2 = analyze_text(text2, entity_list)
+        self.assertTrue(
+            any(r.entity_type == "IN_PASSPORT" for r in results2),
+            f"Failed to detect valid spaced passport number in: {text2}"
+        )
+
+        # Positive case 3: Another valid pattern with different letter prefix
+        text3 = "Passenger ID: K98 76543 was verified at the counter."
+        results3 = analyze_text(text3, entity_list)
+        self.assertTrue(
+            any(r.entity_type == "IN_PASSPORT" for r in results3),
+            f"Failed to detect valid passport number in: {text3}"
+        )
+
+        # Negative case 1: Wrong format (starts with digit)
+        text4 = "The code 91234567 should not be detected as a passport."
+        results4 = analyze_text(text4, entity_list)
+        self.assertFalse(
+            any(r.entity_type == "IN_PASSPORT" for r in results4),
+            f"False positive detected for invalid passport format in: {text4}"
+        )
+
+        # Negative case 2: Too short / malformed
+        text5 = "Temporary ID A12345 is not a passport number."
+        results5 = analyze_text(text5, entity_list)
+        self.assertFalse(
+            any(r.entity_type == "IN_PASSPORT" for r in results5),
+            f"False positive detected for short malformed passport in: {text5}"
+        )
         # Positive case 1
         text1 = "My passport number is A1234567."
         results1 = analyze_text(text1, entity_list)
@@ -98,6 +160,25 @@ class TestTeam__1(unittest.TestCase):
         
     def test_in_voter(self):
         """Test IN_VOTER functionality"""
+        # first 3 characters of IN_VOTER
+        prefix = ["AAA", "GHJ", "333", "3A4"] # first part of IN_VOTER
+        # last 7 digits of IN_VOTER
+        suffix = ["1234567", "2348764", "5703067","4570274"] # second part of IN_VOTER
+
+        # iterate through the prefix and suffix test cases
+        for p in prefix:
+            for s in suffix:
+
+                result = analyze_text(f"My IN_Voter is {p}{s}", ['IN_VOTER'])
+                
+                # negative test case, first 3 characters need to be alphabetical
+                if not p.isalpha():
+                    self.assertFalse(result)
+                else:
+                     # positive test cases
+                    self.assertTrue(result,f"IN_VOTER not recognized{p}{s}")
+                    self.assertEqual(result[0].entity_type, "IN_VOTER")
+                    self.assertAlmostEqual(result[0].score, 0.75,2)
 
 
 if __name__ == '__main__':
