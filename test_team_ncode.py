@@ -150,6 +150,26 @@ class TestTeam_ncode(unittest.TestCase):
     def test_medical_license(self):
         """Test MEDICAL_LICENSE functionality"""
 
+        #positive test case:
+        #valid formats
+        valid_license = ["AB1234563"]
+
+        for license_str in valid_license:
+            result = analyze_text(f"DEA medical certificate number {license_str}", entity_list = ['MEDICAL_LICENSE'])
+            self.assertTrue(result, f'MEDICAL_LICENSE not recognized: {license_str}')
+            self.assertEqual(result[0].entity_type, 'MEDICAL_LICENSE')
+
+        #negative test case:
+        #invalid formats
+        invalid_license = ["AB1234567","123456","ABC1234567","ab1234567","A1234567"]
+        for invalid_id in invalid_license:
+            result = analyze_text(f"DEA medical certificate number {invalid_id}", entity_list = ['MEDICAL_LICENSE'])
+
+            self.assertFalse(result, "False positive detected for MEDICAL_LICENSE")
+
+
+
+
 
 if __name__ == '__main__':
     unittest.main()
