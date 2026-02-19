@@ -1,7 +1,6 @@
 """Unit test file for team _x"""
 import unittest
-from pii_scan import analyze_text, show_aggie_pride  # noqa 
-
+from pii_scan import analyze_text, show_aggie_pride  # noqa
 
 class TestTeam__x(unittest.TestCase):
     """Test team _x PII functions"""
@@ -35,6 +34,11 @@ class TestTeam__x(unittest.TestCase):
 
     def test_person(self):
         """Test PERSON functionality"""
+        results = analyze_text("Alice and Bob went to school", ["PERSON"])
+        self.assertTrue(
+            any(r.entity_type == "PERSON" for r in results),
+            msg="Failed to detect PERSON entity"
+        )
 
     def test_uk_nhs(self):
         """Test UK_NHS functionality"""
