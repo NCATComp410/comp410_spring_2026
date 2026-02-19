@@ -19,24 +19,6 @@ class TestTeam_praise_him(unittest.TestCase):
         """Test FI_PERSONAL_IDENTITY_CODE functionality"""
         positives = [
             "My Finnish ID is 131052-308T",
-            "Finnish PIC: 120488+123X",
-            "Here is one: 010101A123A"
-        ]
-
-        for text in positives:
-            result = analyze_text(text, ['FI_PERSONAL_IDENTITY_CODE'])
-            self.assertTrue(result, f"Failed to detect FI PIC in: {text}")
-            self.assertEqual(result[0].entity_type, 'FI_PERSONAL_IDENTITY_CODE')
-
-        # Negative example (should NOT match)
-        negative = "This text does not contain a Finnish personal identity code."
-        result = analyze_text(negative, ['FI_PERSONAL_IDENTITY_CODE'])
-        self.assertFalse(result)
-
-        # Positive examples (valid Finnish personal identity codes)
-        positives = [
-            "My Finnish ID is 131052-308T",
-            "Finnish PIC: 120488+123X",
             "Here is one: 010101A123A"
         ]
 

@@ -41,6 +41,18 @@ class TestTeam_8_ball(unittest.TestCase):
 
     def test_au_tfn(self):
         """Test AU_TFN functionality"""
+        # positive examples
+        valid = ["123456782", "123 456 782", "000000000"]
+        for tfn in valid:
+            result = analyze_text(f"My TFN is {tfn}", ['AU_TFN'])
+            self.assertTrue(result)
+            self.assertEqual(result[0].entity_type, 'AU_TFN')
+
+        # negative examples (wrong length)
+        invalid = ["12345678", "1234567890"]
+        for bad in invalid:
+            result = analyze_text(f"My TFN is {bad}", ['AU_TFN'])
+            self.assertFalse(result)
 
 
 if __name__ == '__main__':
