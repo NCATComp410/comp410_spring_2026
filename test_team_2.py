@@ -57,10 +57,10 @@ class TestTeam__2(unittest.TestCase):
         ]
 
         for number in valid_numbers:
-            result = analyze_text(f'My IT_Passport {number}', ['IT_VAT_CODE'])
+            result = analyze_text(f'My IT_VAT_CODE {number}', ['IT_VAT_CODE'])
             self.assertTrue(result, f'Valid VAT not recognized {number}')
             self.assertEqual(result[0].entity_type, 'IT_VAT_CODE')
-            self.assertAlmostEqual(result[0].score, 0.01, 2)
+            self.assertAlmostEqual(result[0].score, 1.0, 2)
 
         for number in invalid_numbers:
             result = analyze_text(f'My IT_VAT_CODE {number}', ['IT_VAT_CODE'])
