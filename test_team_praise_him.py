@@ -36,9 +36,11 @@ class TestTeam_praise_him(unittest.TestCase):
         }
 
         # generate fake bank number
-        def test_make_fake_number(length):
+        # the value of num groups defines how many groups of 4 alphanumeric numbers (or 0000 in this case) we want in our IBAN code
+        # Each number of groups is different for each country codes
+        def test_make_fake_number(num_groups):
             groups = ""
-            for i in range(length):
+            for i in range(num_groups):
                 # just generate a bank number full of zeros for simplicity
                 groups += "0000"
 
@@ -55,12 +57,12 @@ class TestTeam_praise_him(unittest.TestCase):
         
         # create check digit from number iban using the MOD97 algorithm
         def test_make_check_digit(n_iban):
-            return f"{98 - (int(n_iban)) % 97}"
+            return f"{98 - (int(n_iban) % 97):0>2}"
         
         # run cases for each combination of country code and check digit
         text = ""
-        for code, length in country_codes.items():
-            iban = code + "00" + test_make_fake_number(length)
+        for code, num_groups in country_codes.items():
+            iban = code + "00" + test_make_fake_number(num_groups)
 
             # create list of check digits. algorithm shouldn't generate 00.
             check_digits = [
@@ -74,7 +76,7 @@ class TestTeam_praise_him(unittest.TestCase):
                 result = analyze_text(text, ['IBAN_CODE'])
 
                 # no number of groups should be greater than 8
-                if length > 8:
+                if num_groups > 8:
                     #print("\ngreater than 8")
                     self.assertFalse(result)
                 
