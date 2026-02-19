@@ -14,6 +14,24 @@ class TestTeam__x(unittest.TestCase):
 
     def test_location(self):
         """Test LOCATION functionality"""
+        #Positive tests
+        #City
+        results = analyze_text("John lives in Houston", ["LOCATION"])
+        print(results)
+        self.assertTrue(len(results) > 0)
+        #Country
+        results = analyze_text("Maria is visiting Canada", ["LOCATION"])
+        print(results)
+        self.assertTrue(len(results) > 0)
+        #State
+        results = analyze_text("They moved to California", ["LOCATION"])
+        print(results)
+        self.assertTrue(len(results) > 0) 
+
+        #Negative test
+        results = analyze_text("Billy likes pizza", ["LOCATION"])
+        print(results)
+        self.assertEqual(len(results), 0)
 
     def test_person(self):
         """Test PERSON functionality"""
