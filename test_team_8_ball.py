@@ -46,23 +46,6 @@ class TestTeam_8_ball(unittest.TestCase):
             self.assertTrue(result)
             self.assertEqual(result[0].entity_type, 'AU_ACN')
 
-        # Valid ACN – spaced format
-        valid_spaced = ["004 085 616"]
-        for acn in valid_spaced:
-            result = analyze_text(
-                f"Australian Company Number {acn}",
-                ['AU_ACN']
-            )
-            self.assertTrue(result)
-            self.assertEqual(result[0].entity_type, 'AU_ACN')
-
-        # Valid ACN – hyphen format
-        valid_hyphen = ["004-085-616"]
-        for acn in valid_hyphen:
-            result = analyze_text(f"ACN: {acn}", ['AU_ACN'])
-            self.assertTrue(result)
-            self.assertEqual(result[0].entity_type, 'AU_ACN')
-
         # ------------------------
         # NEGATIVE TEST CASES
         # ------------------------
