@@ -24,7 +24,8 @@ class TestTeam__z(unittest.TestCase):
                     for y in sec4:
                         for z in sec5:
                             idnum = f"{i}{w}{x}{y}{z}"
-                            known_valid_tnin = "1101700203451"
+                            # replaced 1101700203451 with 1234567890121
+                            known_valid_tnin = "1234567890121"
                             result = analyze_text(f"My Thai ID number is {known_valid_tnin}",["TH_TNIN"])
                             print(result)
                             is_invalid = False
