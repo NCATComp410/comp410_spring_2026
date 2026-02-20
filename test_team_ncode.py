@@ -71,6 +71,25 @@ class TestTeam_ncode(unittest.TestCase):
 
     def test_crypto(self):
         """Test CRYPTO functionality"""
+        # Positive test - Bitcoin-like wallet format
+        valid_wallet = "1BoatSLRHtKNngkdXEeobR76b53LETtpyT"
+        result = analyze_text(
+            valid_wallet,
+            entity_list=['CRYPTO']
+        )
+
+        self.assertTrue(result, f"CRYPTO not recognized {valid_wallet}")
+        self.assertEqual(result[0].entity_type, 'CRYPTO')
+
+        # Negative test
+        normal_text = "This is normal text with no secrets."
+        result = analyze_text(
+            normal_text,
+            entity_list=['CRYPTO']
+        )
+
+        self.assertFalse(result, "False positive detected for CRYPTO")
+
 
     def test_date_time(self):
         """Test DATE_TIME functionality"""
