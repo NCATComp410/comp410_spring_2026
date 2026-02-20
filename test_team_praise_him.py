@@ -12,6 +12,22 @@ class TestTeam_praise_him(unittest.TestCase):
 
     def test_es_nie(self):
         """Test ES_NIE functionality"""
+        valid = ["Y0000000Z", # valid Y NIE with correct control letter
+        "X0000000T", # valid X NIE with correct control letter
+        "X1234567L", # valid formatted NIE
+        "Y1234567X", # another valid NIE
+        'A1234567X'] # wrong first digit
+
+        for nie in valid:
+            result = analyze_text(f'My NIE is {nie}', ['ES_NIE'])
+            if nie[0] == 'A':
+                self.assertFalse(result)
+            else:
+                self.assertTrue(result, f'NIE not recognized {nie}')
+                #[type: ES_NIE, start: 10, end: 19, score: 1.0]
+                self.assertEqual(result[0].entity_type, "ES_NIE")
+                self.assertAlmostEqual(result[0].score, 1.0, 2)
+
 
     def test_es_nif(self):
         """Test ES_NIF functionality"""
