@@ -1,6 +1,7 @@
 """Unit test file for team _z"""
 import unittest
 from pii_scan import analyze_text, show_aggie_pride  # noqa 
+import random
 
 
 class TestTeam__z(unittest.TestCase):
@@ -11,7 +12,24 @@ class TestTeam__z(unittest.TestCase):
 
     def test_th_tnin(self):
         """Test TH_TNIN functionality"""
+        sec1 = ["1", "0"]
+        sec2 = ["2345", "4567"]
+        sec3 = ["67890", "09874"]
+        sec4 = ["12","45"]
+        sec5 = ["1", "0"]
 
+        idnum1 = f"{sec1[0]}{sec2[0]}{sec3[0]}{sec4[0]}{sec5[0]}"
+        idnum2 = f"{sec1[1]}{sec2[1]}{sec3[1]}{sec4[1]}{sec5[1]}"
+        result1 = analyze_text(f"My Thai ID number is {idnum1}",["TH_TNIN"])
+        result2 = analyze_text(f"My Thai ID number is {idnum2}",["TH_TNIN"])
+        print(result1, result2)
+    
+        self.assertFalse(result2, f"Invalid TNIN recognized: {idnum2}")
+        
+        self.assertTrue(result1, f"Invalid TNIN recognized: {idnum1}")
+        self.assertEqual(result1[0].entity_type, 'TH_TNIN')
+        self.assertAlmostEqual(result1[0].score,1.0,2)
+                           
     def test_kr_rrn(self):
         """Test KR_RRN functionality"""
 
