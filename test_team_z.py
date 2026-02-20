@@ -12,47 +12,24 @@ class TestTeam__z(unittest.TestCase):
 
     def test_th_tnin(self):
         """Test TH_TNIN functionality"""
-        sec1 = [str(random.randint(0,2)) for _ in range(3)]
-        sec2 = ['2345', '3456', '4567']
-        sec3 = [''.join(str(random.randint(0,9)) for _ in range(5)) for _ in range(3)]
-        sec4 = [''.join(str(random.randint(0,9)) for _ in range(2)) for _ in range(3)]
-        sec5 = [str(random.randint(0,9)) for _ in range(3)]
-        ivprovinces = ["28", "29", "59", "68", "69", "78", "79", "87", "88", "89", "97", "98", "99"]
-        for i in sec1:
-            for w in sec2:
-                for x in sec3:
-                    for y in sec4:
-                        for z in sec5:
-                            idnum = f"{i}{w}{x}{y}{z}"
-                            # replaced 1101700203451 with 1234567890121
-                            known_valid_tnin = "1234567890121"
-                            result = analyze_text(f"My Thai ID number is {known_valid_tnin}",["TH_TNIN"])
-                            print(result)
-                            is_invalid = False
-                        
-                            if len(idnum) != 13 or not idnum.isdigit():
-                               is_invalid = True
-                            elif idnum[0] =='0' or idnum[1] == '0':
-                               is_invalid = True
-                            if is_invalid :
-                                self.assertFalse(result, f"Invalid TNIN recognized: {idnum}")
+        sec1 = ["1", "0"]
+        sec2 = ["2345", "4567"]
+        sec3 = ["67890", "09874"]
+        sec4 = ["12","45"]
+        sec5 = ["1", "0"]
 
-                            else:
-                                self.assertTrue(result, f"Invalid TNIN recognized: {idnum}")
-                                self.assertEqual(result[0].entity_type, 'TH_TNIN')
-                                self.assertAlmostEqual(result[0].score,1.0,2)
-                            # else:
-                            #     self.fail(f"Valid TNIN not recognized: {idnum}")
-                            # # if is_invalid:
-                            # #     self.assertFalse(result)
-                            # # else:
-                            # #     self.assertTrue(result)
+        idnum1 = f"{sec1[0]}{sec2[0]}{sec3[0]}{sec4[0]}{sec5[0]}"
+        idnum2 = f"{sec1[1]}{sec2[1]}{sec3[1]}{sec4[1]}{sec5[1]}"
+        result1 = analyze_text(f"My Thai ID number is {idnum1}",["TH_TNIN"])
+        result2 = analyze_text(f"My Thai ID number is {idnum2}",["TH_TNIN"])
+        print(result1, result2)
+    
+        self.assertFalse(result2, f"Invalid TNIN recognized: {idnum2}")
+        
+        self.assertTrue(result1, f"Invalid TNIN recognized: {idnum1}")
+        self.assertEqual(result1[0].entity_type, 'TH_TNIN')
+        self.assertAlmostEqual(result1[0].score,1.0,2)
                            
-                         
-                           
-                            
-
-        #[type: TH_TNIN, start: 21, end: 34, score: 1.0]
     def test_kr_rrn(self):
         """Test KR_RRN functionality"""
 
