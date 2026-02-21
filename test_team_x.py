@@ -60,6 +60,8 @@ class TestTeam__x(unittest.TestCase):
 
     def test_person(self):
         """Test PERSON functionality"""
+        results = pii_scan.analyze_text("Alice and Bob went to school", ["PERSON"])
+        self.assertTrue(len(results) > 0)
 
     def test_uk_nhs(self):
         """Test UK_NHS functionality"""
