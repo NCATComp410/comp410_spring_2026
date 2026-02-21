@@ -1,6 +1,6 @@
 """Unit test file for team _x"""
 import unittest
-from pii_scan import analyze_text, show_aggie_pride  # noqa
+from pii_scan import analyze_text, show_aggie_pride  # noqa 
 
 
 class TestTeam__x(unittest.TestCase):
