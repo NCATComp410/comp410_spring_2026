@@ -2,6 +2,7 @@
 import unittest
 from pii_scan import analyze_text, show_aggie_pride  # noqa
 
+
 class TestTeam__x(unittest.TestCase):
     """Test team _x PII functions"""
     def test_show_aggie_pride(self):
@@ -36,7 +37,7 @@ class TestTeam__x(unittest.TestCase):
         """Test PERSON functionality"""
         results = analyze_text("Alice and Bob went to school", ["PERSON"])
         self.assertTrue(
-            any(r.entity_type == "PERSON" for r in results),
+            all(r.entity_type == "PERSON" for r in results),
             msg="Failed to detect PERSON entity"
 
         )
