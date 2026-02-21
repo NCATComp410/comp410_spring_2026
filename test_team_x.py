@@ -60,6 +60,19 @@ class TestTeam__x(unittest.TestCase):
 
     def test_person(self):
         """Test PERSON functionality"""
+        results = analyze_text("Alice and Bob went to school", ["PERSON"])
+        self.assertTrue(
+            all(r.entity_type == "PERSON" for r in results),
+            msg="Failed to detect PERSON entity"
+
+        )
+
+        results = analyze_text("There are no names here", ["PERSON"])
+        self.assertEqual(
+            len(results), 0,
+            msg="Incorrectly detected PERSON entity"
+        )
+    
 
     def test_uk_nhs(self):
         """Test UK_NHS functionality"""
