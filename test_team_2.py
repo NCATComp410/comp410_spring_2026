@@ -83,6 +83,31 @@ class TestTeam__2(unittest.TestCase):
                     
     def test_it_vat_code(self):
         """Test IT_VAT_CODE functionality"""
+        
+        valid_numbers = [
+            '01114601006',
+            '12345678903',
+            '123456789 03',
+            '123456789_03',
+            ]
+        
+        invalid_numbers = [
+            '00000000000',
+            '12345678901',
+            'abcdefghijk',
+            '123456789012'
+        ]
+
+        for number in valid_numbers:
+            result = analyze_text(f'My IT_VAT_CODE {number}', ['IT_VAT_CODE'])
+            self.assertTrue(result, f'Valid VAT not recognized {number}')
+            self.assertEqual(result[0].entity_type, 'IT_VAT_CODE')
+            self.assertAlmostEqual(result[0].score, 1.0, 2)
+
+        for number in invalid_numbers:
+            result = analyze_text(f'My IT_VAT_CODE {number}', ['IT_VAT_CODE'])
+            self.assertFalse(result, f'Invalid VAT incorrectly recognized {number}')
+
 
 
 if __name__ == '__main__':
