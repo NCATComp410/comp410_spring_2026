@@ -177,6 +177,7 @@ def read_data() -> list:
     # Construct the URL from the API key
     header = 'https://drive.google.com/uc?export=download&id=1Madj8otKjwwOO353nL_'
     url = requests.get(header + secret, timeout=10)
+    print(url)
 
     # Return the data as a list of lines
     return url.text.split('\n')
@@ -184,4 +185,4 @@ def read_data() -> list:
 
 if __name__ == '__main__':
     print(show_aggie_pride())
-    # anonymize_data(read_data())
+    anonymize_data(read_data())
