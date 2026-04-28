@@ -31,6 +31,27 @@ class TestTeam_praise_him(unittest.TestCase):
 
     def test_es_nif(self):
         """Test ES_NIF functionality"""
+        valid = [
+            "12345678Z",  # valid ES_NIF
+            "00000000T",  # valid ES_NIF
+            "99999999R"   # valid ES_NIF
+        ]
+
+        invalid = [
+            "12345678A",  # wrong control letter
+            "1234567Z",   # too short
+            "123456789Z"  # too long
+        ]
+
+        for nif in valid:
+            result = analyze_text(f"My Spanish NIF is {nif}", ["ES_NIF"])
+            self.assertTrue(result, f"ES_NIF not recognized: {nif}")
+            self.assertEqual(result[0].entity_type, "ES_NIF")
+            self.assertAlmostEqual(result[0].score, 1.0, 2)
+
+        for nif in invalid:
+            result = analyze_text(f"My Spanish NIF is {nif}", ["ES_NIF"])
+            self.assertFalse(result, f"Invalid ES_NIF was recognized: {nif}")
 
     def test_fi_personal_identity_code(self):
         """Test FI_PERSONAL_IDENTITY_CODE functionality"""
