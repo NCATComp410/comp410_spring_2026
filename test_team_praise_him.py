@@ -17,14 +17,18 @@ class TestTeam_praise_him(unittest.TestCase):
 
     def test_fi_personal_identity_code(self):
         """Test FI_PERSONAL_IDENTITY_CODE functionality"""
+        
+        # the last digit (check character) is calculated by taking the preceding characters,
+        # removing the century sign (+, -, or A), mod (%) the number by 31 and use the
+        # remainder to find the check digit.
         positives = [
             "My Finnish ID is 131052-308T",
-            "Here is one: 010101A123A"
+            "Here is one: 311299-999E"
         ]
 
         for text in positives:
             result = analyze_text(text, ['FI_PERSONAL_IDENTITY_CODE'])
-            #self.assertTrue(result, f"Failed to detect FI PIC in: {text}")
+            self.assertTrue(result, f"Failed to detect FI PIC in: {text}")
             self.assertEqual(result[0].entity_type, 'FI_PERSONAL_IDENTITY_CODE')
 
         # Negative example (should NOT match)
