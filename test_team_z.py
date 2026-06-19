@@ -80,6 +80,35 @@ class TestTeam__z(unittest.TestCase):
 
     def test_sg_uen(self):
         """Test SG_UEN functionality"""
+        # Combine SG_EUN
+        valid_samples = ["53125226D"]
+        
+        # Create invalid samples for negative testing
+        invalid_samples = [
+            "1234567X",      # Too short
+            "2023123456Z",   # Too long
+            "A23LP1234K",    # Invalid prefix (must be T, S, or R)
+            "123456789"      # Missing check letter
+        ]
+
+        #result = []
+        result  = analyze_text("53125226D",["SG_UEN"])
+        #result = result + analyze_text(" 123456789X ", ["SG_UEN"])
+        self.assertTrue(result, "Valid UEN not found:")
+
+        #Test both lists
+        for uen in (valid_samples + invalid_samples):
+            result = analyze_text(f"The entity UEN is {uen}", ["SG_UEN"])
+            
+            if uen in invalid_samples:
+                # (Team) Negative test case: Expecting no result
+                self.assertFalse(result, f"Invalid UEN incorrectly detected: {uen}")
+            else:
+                # (Team) Positive test case: Expecting detection
+                self.assertTrue(result, f"Valid UEN not found: {uen}")
+                self.assertEqual(result[0].entity_type, 'SG_UEN')
+                self.assertAlmostEqual(result[0].score, 1.0, 2)
+
 
 
 if __name__ == '__main__':
